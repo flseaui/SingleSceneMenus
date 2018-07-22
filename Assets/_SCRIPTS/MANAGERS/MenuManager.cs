@@ -18,6 +18,7 @@ namespace MANAGERS
         private MenuTag _previousMenuState;
 
         [SerializeField] private MenuTag _startingMenu = MenuTag.BlankMenu;
+        [SerializeField] private GameObject _blankMenuPrefab;
 
         public Dictionary<MenuTag, Menu> Menus = new Dictionary<MenuTag, Menu>();
 
@@ -56,6 +57,18 @@ namespace MANAGERS
             _previousMenuState = _startingMenu;
         }
 
+        public void CreateMenu(string menuName)
+        {
+            var menu = Instantiate(_blankMenuPrefab, GameObject.Find("Canvas").transform, false);
+            menu.name = menuName;
+            menu.transform.Find("BlankMenuPanel").name = $"{ menuName }Panel";
+        }
+
+        public static void DeleteMenu(string menuName)
+        {
+            Destroy(GameObject.Find(menuName));
+        }
+        
         private void OnMenuStateChanged(MenuChangedEventArgs e)
         {
             var handler = MenuStateChanged;
